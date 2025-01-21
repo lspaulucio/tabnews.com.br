@@ -42,13 +42,14 @@ describe('GET /api/v1/mfa/totp/enable', () => {
 
       const { response, responseBody } = await enableRequestBuilder.get();
 
-      const secret = responseBody.totp.split('&')[1];
+      const searchParams = new URL(responseBody.totp).searchParams;
+      const secret = searchParams.get('secret');
 
       expect(response.status).toBe(200);
+      expect(secret).toHaveLength(32);
       expect(responseBody).toStrictEqual({
-        totp: `otpauth://totp/TabNews:${username}?issuer=TabNews&${secret}&algorithm=SHA1&digits=6&period=30`,
+        totp: `otpauth://totp/TabNews:${username}?issuer=TabNews&secret=${secret}&algorithm=SHA1&digits=6&period=30`,
       });
-      expect(secret).toHaveLength(39);
     });
   });
 });
