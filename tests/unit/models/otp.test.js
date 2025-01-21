@@ -31,7 +31,7 @@ describe('OTP model', () => {
     expect(otp.validateTotp(secret, token)).toBeFalsy();
   });
 
-  it('should encrypt a secret into a data of size 128', () => {
+  it('should encrypt a secret into a data of right size', () => {
     const secret = otp.createSecret();
     const encryptedSecret = otp.encryptData(secret);
 
