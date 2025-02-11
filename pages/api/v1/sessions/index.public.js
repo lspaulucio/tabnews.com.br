@@ -6,6 +6,7 @@ import authentication from 'models/authentication.js';
 import authorization from 'models/authorization.js';
 import cacheControl from 'models/cache-control';
 import controller from 'models/controller.js';
+import encryption from 'models/encryption';
 import otp from 'models/otp';
 import session from 'models/session';
 import user from 'models/user';
@@ -77,7 +78,7 @@ async function postHandler(request, response) {
     }
 
     if (secureInputValues.totp) {
-      const valid = otp.validateUserTotp(storedUser.totp_secret, secureInputValues.totp);
+      const valid = otp.validateTotp(encryption.decryptData(storedUser.totp_secret), secureInputValues.totp);
 
       if (!valid) {
         throw new UnauthorizedError({

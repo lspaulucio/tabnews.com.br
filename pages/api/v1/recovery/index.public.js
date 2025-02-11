@@ -5,6 +5,7 @@ import authentication from 'models/authentication.js';
 import authorization from 'models/authorization.js';
 import cacheControl from 'models/cache-control';
 import controller from 'models/controller.js';
+import encryption from 'models/encryption';
 import otp from 'models/otp';
 import recovery from 'models/recovery.js';
 import user from 'models/user';
@@ -96,7 +97,7 @@ async function patchHandler(request, response) {
         errorLocationCode: 'CONTROLLER:RECOVERY:PATCH_HANDLER:MFA:TOTP:TOKEN_NOT_SENT',
       });
     }
-    if (!otp.validateUserTotp(targetUser.totp_secret, validatedInputValues.totp)) {
+    if (!otp.validateTotp(encryption.decryptData(targetUser.totp_secret), validatedInputValues.totp)) {
       throw new ForbiddenError({
         message: 'O código TOTP informado é inválido.',
         action: 'Verifique o código TOTP e tente novamente.',

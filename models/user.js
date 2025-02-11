@@ -2,7 +2,7 @@ import { NotFoundError, ValidationError } from 'errors';
 import database from 'infra/database.js';
 import authentication from 'models/authentication.js';
 import emailConfirmation from 'models/email-confirmation.js';
-import otp from 'models/otp.js';
+import encryption from 'models/encryption.js';
 import pagination from 'models/pagination.js';
 import validator from 'models/validator.js';
 
@@ -441,7 +441,7 @@ async function hashPasswordInObject(userObject) {
 }
 
 function encryptTotpSecretInObject(userObject) {
-  userObject.totp_secret = otp.encryptData(userObject.totp_secret);
+  userObject.totp_secret = encryption.encryptData(userObject.totp_secret);
   return userObject;
 }
 
